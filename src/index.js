@@ -130,8 +130,14 @@ async function redditFetch({ subreddit, type = `top` , sort = 'all', allowNSFW, 
     nfetch(targetURL).then(res => res.json())
     .then(body => {
 		
-		let post
-
+	let post
+	
+	/* If body.data was not found at all return as null */
+        if (!body.data){
+            post = null;
+            return resolve(post);
+        }
+	
         // If reason is found and it equals private return as "private"
         if (body.reason && body.reason.toLowerCase() === "private"){
            post = "private";
@@ -142,12 +148,6 @@ async function redditFetch({ subreddit, type = `top` , sort = 'all', allowNSFW, 
         if (!body.data.children || body.data.children <= 0){
            post = "invalid";
            return resolve(post);
-        }
-
-        /* If body.data was not found at all return as null */
-        if (!body.data){
-            post = null;
-            return resolve(post);
         }
 
         /* Array of found submissions */
