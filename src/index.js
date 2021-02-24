@@ -132,7 +132,13 @@ async function redditFetch({ subreddit, type = `top` , sort = 'all', allowNSFW, 
 		
 	let post
 	
-	/* If body.data was not found at all return as null */
+    /* If body.data was not found at all return as null */
+    if (!body){
+        post = null;
+        return resolve(post);
+    }
+	
+    /* If body.data was not found at all return as null */
         if (!body.data){
             post = null;
             return resolve(post);
